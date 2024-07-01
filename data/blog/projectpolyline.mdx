@@ -52,30 +52,30 @@ if (entityProfileView.Status != PromptStatus.OK) return;
 
 3. Criei um Profile vazio.
 ```csharp
-                    ProfileView profileView = tx.GetObject(entityProfileView.ObjectId, OpenMode.ForWrite) as ProfileView;
-                    double x = 0.0;
-                    double y = 0.0;
-                    if (profileView.ElevationRangeMode == ElevationRangeType.Automatic)
-                    {
-                        profileView.ElevationRangeMode = ElevationRangeType.UserSpecified;
-                        profileView.FindXYAtStationAndElevation(profileView.StationStart, profileView.ElevationMin, ref x, ref y);
-                    }
-                    else
-                        profileView.FindXYAtStationAndElevation(profileView.StationStart, profileView.ElevationMin, ref x, ref y);
+ProfileView profileView = tx.GetObject(entityProfileView.ObjectId, OpenMode.ForWrite) as ProfileView;
+double x = 0.0;
+double y = 0.0;
+if (profileView.ElevationRangeMode == ElevationRangeType.Automatic)
+{
+    profileView.ElevationRangeMode = ElevationRangeType.UserSpecified;
+    profileView.FindXYAtStationAndElevation(profileView.StationStart, profileView.ElevationMin, ref x, ref y);
+}
+else
+    profileView.FindXYAtStationAndElevation(profileView.StationStart, profileView.ElevationMin, ref x, ref y);
 
-                    ProfileViewStyle profileViewStyle = tx.GetObject(profileView.StyleId, OpenMode.ForRead) as ProfileViewStyle;
+ProfileViewStyle profileViewStyle = tx.GetObject(profileView.StyleId, OpenMode.ForRead) as ProfileViewStyle;
 
-                    ObjectId layerId = (tx.GetObject(profileView.AlignmentId, OpenMode.ForRead) as Alignment).LayerId;
+ObjectId layerId = (tx.GetObject(profileView.AlignmentId, OpenMode.ForRead) as Alignment).LayerId;
 
-                    ObjectId profileStyleId = doc.Styles.ProfileStyles.FirstOrDefault();
+ObjectId profileStyleId = doc.Styles.ProfileStyles.FirstOrDefault();
 
-                    ObjectId profileLabelSetStylesId = doc.Styles.LabelSetStyles.ProfileLabelSetStyles.FirstOrDefault();
+ObjectId profileLabelSetStylesId = doc.Styles.LabelSetStyles.ProfileLabelSetStyles.FirstOrDefault();
 
-                    ObjectId profByLayout = Profile.CreateByLayout("New Profile", profileView.AlignmentId, layerId, profileStyleId, profileLabelSetStylesId);
+ObjectId profByLayout = Profile.CreateByLayout("New Profile", profileView.AlignmentId, layerId, profileStyleId, profileLabelSetStylesId);
 
-                    Profile profile = tx.GetObject(profByLayout, OpenMode.ForWrite) as Profile;
+Profile profile = tx.GetObject(profByLayout, OpenMode.ForWrite) as Profile;
 
-                    BlockTableRecord blockTableRecord = tx.GetObject(database.CurrentSpaceId, OpenMode.ForWrite) as BlockTableRecord;
+BlockTableRecord blockTableRecord = tx.GetObject(database.CurrentSpaceId, OpenMode.ForWrite) as BlockTableRecord;
 ```
 4. Extrai as informações de geometria da Polyline e adiciono-as ao Profile vazio.
 ```csharp
