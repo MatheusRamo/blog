@@ -1,4 +1,8 @@
-export default function YouTube ({ id } : { id : string }){
+interface Props {
+    id: string
+  }
+
+  const  YouTube = ({ id }: Props) => {
     return (
       <div>
         <iframe
@@ -10,3 +14,5 @@ export default function YouTube ({ id } : { id : string }){
       </div>
     );
   };
+
+export default YouTube
